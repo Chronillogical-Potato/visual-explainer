@@ -22,14 +22,36 @@
   - Both light and dark themes via prefers-color-scheme
   - Staggered fade-in, reduced motion respect
 -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700&family=Fragment+Mono:wght@400&display=swap" rel="stylesheet">
+
+<style id="cookie-offline-fonts">
+  @font-face {
+    font-family: 'Fira Code Nerd Font Propo';
+    src: url('../assets/fonts/FiraCodeNerdFontPropo-Retina.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Fira Code Nerd Font Mono';
+    src: url('../assets/fonts/FiraCodeNerdFontMono-Retina.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Geist Pixel Line';
+    src: url('../assets/fonts/GeistPixel-Line.otf') format('opentype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+</style>
 <style>
   /* ============ THEME ============ */
   :root {
-    --font-body: 'Bricolage Grotesque', system-ui, sans-serif;
-    --font-mono: 'Fragment Mono', 'SF Mono', Consolas, monospace;
+    --font-body: 'Fira Code Nerd Font Propo', system-ui, sans-serif;
+    --font-mono: 'Fira Code Nerd Font Mono', ui-monospace, monospace;
+    --font-title: 'Geist Pixel Line', monospace;
 
     --bg: #f0fdfa;
     --surface: #ffffff;
@@ -90,6 +112,16 @@
       animation-delay: 0ms !important;
       transition-duration: 0.01ms !important;
     }
+  }
+
+
+  /* Cookie: Geist Pixel Line ONLY in standalone title/header containers */
+  .cookie-title, header.cookie-title-block, .slide-title-block {
+    font-family: var(--font-title);
+  }
+  .cookie-title h1, header.cookie-title-block h1, .slide-title-block h1,
+  .cookie-title .title, header.cookie-title-block .title {
+    font-family: inherit;
   }
 
   /* ============ LAYOUT ============ */
@@ -360,8 +392,8 @@
 </div>
 
 <script type="module">
-  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
-  import elkLayouts from 'https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk/dist/mermaid-layout-elk.esm.min.mjs';
+  import mermaid from '../assets/vendor/mermaid/dist/mermaid.esm.min.mjs';
+  import elkLayouts from '../assets/vendor/mermaid-layout-elk/dist/mermaid-layout-elk.esm.min.mjs';
 
   const config = {
     fitPadding: 28,
@@ -394,7 +426,7 @@
     look: 'classic',
     layout: 'elk',
     themeVariables: {
-      fontFamily: "'Bricolage Grotesque', system-ui, sans-serif",
+      fontFamily: "'Fira Code Nerd Font Propo', system-ui, sans-serif",
       fontSize: '16px',
       primaryColor: isDark ? '#115e59' : '#ccfbf1',
       primaryBorderColor: isDark ? '#2dd4bf' : '#0d9488',

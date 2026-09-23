@@ -183,7 +183,7 @@ const FONT_PAIRS = {
 Swapping fonts only works if the page reads them through variables, so use `var(--font-body)` and `var(--font-mono)` everywhere rather than naming families in rules. Load every family in one stylesheet link, at every weight the page uses:
 
 ```
-https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@400;500&family=Bricolage+Grotesque:wght@400;600;700&family=DM+Sans:wght@400;500;700&family=Fira+Code:wght@400;500&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Instrument+Serif&family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap
+[REMOVED: Cookie offline — use assets/fonts only; see COOKIE.md]
 ```
 
 ## Picker markup
