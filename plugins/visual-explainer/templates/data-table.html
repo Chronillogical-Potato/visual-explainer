@@ -22,15 +22,47 @@
   - Both light and dark themes via prefers-color-scheme
   - Responsive horizontal scroll wrapper
 -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style id="cookie-offline-fonts">
+  @font-face {
+    font-family: 'Fira Code Nerd Font Propo';
+    src: url('../assets/fonts/FiraCodeNerdFontPropo-Retina.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Fira Code Nerd Font Mono';
+    src: url('../assets/fonts/FiraCodeNerdFontMono-Retina.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Geist Pixel Line';
+    src: url('../assets/fonts/GeistPixel-Line.otf') format('opentype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  /* Cookie: Geist Pixel Line ONLY in standalone title/header containers */
+  .cookie-title, header.cookie-title-block, .slide-title-block {
+    font-family: var(--font-title);
+  }
+  .cookie-title h1, header.cookie-title-block h1, .slide-title-block h1,
+  .cookie-title .title, header.cookie-title-block .title {
+    font-family: inherit;
+  }
+
+</style>
 <style>
   /* ============ THEME ============ */
   :root {
-    --font-body: 'Instrument Serif', 'Georgia', serif;
-    --font-mono: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
-    --font-sans: system-ui, -apple-system, sans-serif;
+    --font-body: 'Fira Code Nerd Font Propo', system-ui, sans-serif;
+    --font-mono: 'Fira Code Nerd Font Mono', ui-monospace, monospace;
+    --font-title: 'Geist Pixel Line', monospace;
+    --font-sans: 'Fira Code Nerd Font Propo', system-ui, sans-serif;
 
     --bg: #fff5f5;
     --surface: #ffffff;

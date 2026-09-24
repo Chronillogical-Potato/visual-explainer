@@ -1,3 +1,6 @@
+@font-face{font-family:'Fira Code Nerd Font Propo';src:url('../assets/fonts/FiraCodeNerdFontPropo-Retina.ttf') format('truetype');font-display:swap;}
+@font-face{font-family:'Fira Code Nerd Font Mono';src:url('../assets/fonts/FiraCodeNerdFontMono-Retina.ttf') format('truetype');font-display:swap;}
+@font-face{font-family:'Geist Pixel Line';src:url('../assets/fonts/GeistPixel-Line.otf') format('opentype');font-display:swap;}
 :root {
   color-scheme: light dark;
   --bg: #f4f1e9;
@@ -41,7 +44,7 @@ body {
     linear-gradient(color-mix(in srgb, var(--border) 25%, transparent) 1px, transparent 1px) 0 0 / 32px 32px,
     var(--bg);
   color: var(--text);
-  font-family: "Avenir Next", "Trebuchet MS", sans-serif;
+  font-family: 'Fira Code Nerd Font Propo', system-ui, sans-serif;
   line-height: 1.55;
 }
 

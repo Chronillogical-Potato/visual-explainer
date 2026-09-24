@@ -11,7 +11,7 @@ Do NOT use for dashboards — CSS Grid card layouts with Chart.js look better fo
 **CDN:**
 ```html
 <script type="module">
-  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  import mermaid from '../assets/vendor/mermaid/dist/mermaid.esm.min.mjs';
 
   mermaid.initialize({ startOnLoad: true, /* ... */ });
 </script>
@@ -20,8 +20,8 @@ Do NOT use for dashboards — CSS Grid card layouts with Chart.js look better fo
 **With ELK layout** (required for `layout: 'elk'` — it's a separate package, not bundled in core):
 ```html
 <script type="module">
-  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
-  import elkLayouts from 'https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk/dist/mermaid-layout-elk.esm.min.mjs';
+  import mermaid from '../assets/vendor/mermaid/dist/mermaid.esm.min.mjs';
+  import elkLayouts from '../assets/vendor/mermaid-layout-elk/dist/mermaid-layout-elk.esm.min.mjs';
 
   mermaid.registerLayoutLoaders(elkLayouts);
   mermaid.initialize({ startOnLoad: true, layout: 'elk', /* ... */ });
@@ -36,7 +36,7 @@ Always use `theme: 'base'` — it's the only theme where all `themeVariables` ar
 
 ```html
 <script type="module">
-  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  import mermaid from '../assets/vendor/mermaid/dist/mermaid.esm.min.mjs';
 
   const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
   mermaid.initialize({
@@ -449,7 +449,8 @@ The CSS overrides on the container (`.mermaid-wrap`) and page will still respond
 Use for bar charts, line charts, pie/doughnut charts, radar charts, and other data-driven visualizations in dashboard-type diagrams. Overkill for static numbers — use pure SVG/CSS for simple progress bars and sparklines.
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+<!-- Cookie offline: do NOT use jsDelivr. Vendor chart.js locally under assets/vendor/ if needed. -->
+<!-- <script src="../assets/vendor/chart.umd.min.js"></script> -->
 
 <canvas id="myChart" width="600" height="300"></canvas>
 
@@ -507,7 +508,8 @@ Wrap the canvas in a styled container:
 Use when a diagram has 10+ elements and you want a choreographed entrance sequence (staggered reveals, path drawing, count-up numbers). For simpler diagrams, CSS `animation-delay` staggering is sufficient.
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/animejs@3.2.2/lib/anime.min.js"></script>
+<!-- Cookie offline: do NOT use jsDelivr. Vendor animejs locally under assets/vendor/ if needed. -->
+<!-- <script src="../assets/vendor/anime.min.js"></script> -->
 
 <script>
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -554,7 +556,7 @@ When using anime.js, set initial opacity to 0 in CSS so elements don't flash bef
 }
 ```
 
-## Google Fonts — Typography
+## local Cookie fonts (see COOKIE.md; do not use Google Fonts CDN) — Typography
 
 Always load with `display=swap` for fast rendering. Pick a distinctive pairing — body + mono at minimum, optionally a display font for the title.
 
@@ -565,9 +567,7 @@ Always load with `display=swap` for fast rendering. Pick a distinctive pairing �
 - system-ui alone without a named font — signals zero design intent
 
 ```html
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!-- Cookie offline fonts: use @font-face from ../assets/fonts/ (see COOKIE.md). Never Google Fonts CDN. -->
 ```
 
 Define as CSS variables for easy reference:

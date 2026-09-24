@@ -26,14 +26,46 @@
   - prefers-reduced-motion respected
 -->
 <script>document.documentElement.classList.add('js');</script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style id="cookie-offline-fonts">
+  @font-face {
+    font-family: 'Fira Code Nerd Font Propo';
+    src: url('../assets/fonts/FiraCodeNerdFontPropo-Retina.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Fira Code Nerd Font Mono';
+    src: url('../assets/fonts/FiraCodeNerdFontMono-Retina.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Geist Pixel Line';
+    src: url('../assets/fonts/GeistPixel-Line.otf') format('opentype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  /* Cookie: Geist Pixel Line ONLY in standalone title/header containers */
+  .cookie-title, header.cookie-title-block, .slide-title-block {
+    font-family: var(--font-title);
+  }
+  .cookie-title h1, header.cookie-title-block h1, .slide-title-block h1,
+  .cookie-title .title, header.cookie-title-block .title {
+    font-family: inherit;
+  }
+
+</style>
 <style>
   /* ============ THEME: Midnight Editorial ============ */
   :root {
-    --font-body: 'Instrument Serif', Georgia, serif;
-    --font-mono: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+    --font-body: 'Fira Code Nerd Font Propo', system-ui, sans-serif;
+    --font-mono: 'Fira Code Nerd Font Mono', ui-monospace, monospace;
+    --font-title: 'Geist Pixel Line', monospace;
     --bg: #0f1729;
     --surface: #162040;
     --surface2: #1d2b52;
@@ -897,7 +929,7 @@ graph LR
 </div><!-- /deck -->
 
 <script type="module">
-  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  import mermaid from '../assets/vendor/mermaid/dist/mermaid.esm.min.mjs';
 
   const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
   mermaid.initialize({
