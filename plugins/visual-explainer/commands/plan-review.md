@@ -34,4 +34,4 @@ For each proposed change, verify whether referenced files/functions/types exist,
 
 Use current-vs-planned visual language. Include responsive nav. Follow the skill’s Mermaid, overflow, and evidence rules.
 
-Write to `~/.agent/diagrams/` and open in browser.
+Write to `~/.agent/diagrams/`, make it self-contained (render tool, or `offline/inline-assets.mjs` — see SKILL.md "Cookie offline delivery"), and open in browser.

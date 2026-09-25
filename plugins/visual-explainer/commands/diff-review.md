@@ -40,4 +40,4 @@ Use file paths, command outputs, or file:line evidence. Do not invent rationale 
 
 Use diff color language consistently: red removed/before, green added/after, amber modified/risk, blue neutral context. Use responsive section navigation for 4+ sections. Follow the skill’s Mermaid and overflow rules.
 
-Write to `~/.agent/diagrams/` and open in browser.
+Write to `~/.agent/diagrams/`, make it self-contained (render tool, or `offline/inline-assets.mjs` — see SKILL.md "Cookie offline delivery"), and open in browser.

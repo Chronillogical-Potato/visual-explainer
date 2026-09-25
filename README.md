@@ -522,6 +522,7 @@ The skill routes to the right approach automatically: Mermaid for flowcharts and
 - Generated HTML is portable and self-contained, but auto-opening depends on the harness, browser access, and sandbox rules.
 - PPTX export is a static best-effort handoff. The HTML deck remains the source of truth for full visual fidelity.
 - All harnesses write visual output to `~/.agent/diagrams/` unless the user asks for a different path.
+- Cookie fork: every written page is made self-contained (fonts + vendored Mermaid/ELK embedded) so it opens from `file://` in Chrome on any machine with zero outside requests. See `COOKIE.md`.
 - Switching OS theme requires a page refresh for Mermaid SVGs.
 - Results vary by model capability.
 

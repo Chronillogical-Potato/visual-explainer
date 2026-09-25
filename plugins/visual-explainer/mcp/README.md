@@ -47,6 +47,7 @@ Then point the host at the server entry:
 - `visual_explainer_prepare`: returns a recommended visual explanation flow. It does not write files.
 - `visual_explainer_render_html`: validates a complete HTML document and writes it to the configured output directory (default `~/.agent/diagrams/`).
 - `visual_explainer_render_quick`: validates a quick-mode JSON spec and writes rendered HTML to the configured output directory (default `~/.agent/diagrams/`).
+- Cookie fork: both render tools embed Cookie fonts and the vendored Mermaid/ELK classic bundle (`offline/inline-assets.mjs`) before writing, so outputs open from `file://` anywhere. Warnings about remaining external references are appended to the tool message.
 
 Render tools default to `open: false`. Set `open: true` only when you want the server to request a browser or Glimpse window.
 

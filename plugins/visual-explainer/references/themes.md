@@ -168,22 +168,20 @@ function mermaidVars(css) {
 
 ## Font pairs
 
-The picker offers the pairs already recommended in `SKILL.md`, so a switchable page cannot wander outside the curated set:
+The picker only offers Cookie families (see `SKILL.md` / `COOKIE.md`), so a switchable page cannot wander outside the offline set:
 
 ```js
 const FONT_PAIRS = {
-  'dm':         { label: 'DM Sans',             sans: "'DM Sans'",              mono: "'Fira Code'" },
-  'instrument': { label: 'Instrument Serif',    sans: "'Instrument Serif'",     mono: "'JetBrains Mono'" },
-  'plex':       { label: 'IBM Plex Sans',       sans: "'IBM Plex Sans'",        mono: "'IBM Plex Mono'" },
-  'bricolage':  { label: 'Bricolage Grotesque', sans: "'Bricolage Grotesque'",  mono: "'JetBrains Mono'" },
-  'jakarta':    { label: 'Plus Jakarta Sans',   sans: "'Plus Jakarta Sans'",    mono: "'Azeret Mono'" }
+  // Cookie policy: only the vendored Cookie families. Offer role swaps, not new families.
+  'cookie':      { label: 'Cookie (Propo body)', sans: "'Fira Code Nerd Font Propo'", mono: "'Fira Code Nerd Font Mono'" },
+  'cookie-mono': { label: 'Cookie (all Mono)',   sans: "'Fira Code Nerd Font Mono'",  mono: "'Fira Code Nerd Font Mono'" }
 };
 ```
 
 Swapping fonts only works if the page reads them through variables, so use `var(--font-body)` and `var(--font-mono)` everywhere rather than naming families in rules. Load every family in one stylesheet link, at every weight the page uses:
 
 ```
-[REMOVED: Cookie offline — use assets/fonts only; see COOKIE.md]
+/* @font-face rules pointing at ../assets/fonts/ (see templates); the inliner embeds them */
 ```
 
 ## Picker markup

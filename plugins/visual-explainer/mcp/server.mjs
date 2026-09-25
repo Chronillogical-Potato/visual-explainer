@@ -9,6 +9,7 @@ import { McpServer } from "@modelcontextprotocol/server";
 import { serveStdio } from "@modelcontextprotocol/server/stdio";
 import * as z from "zod/v4";
 import { renderQuickSpec } from "../quick/render.mjs";
+import { inlineCookieAssets } from "../offline/inline-assets.mjs";
 
 const serverPath = fileURLToPath(import.meta.url);
 const mcpDir = dirname(serverPath);
@@ -173,7 +174,10 @@ function ensureDocumentMetadata(html) {
 }
 
 function prepareRenderedHtml(html) {
-  return ensureDocumentMetadata(ensureFavicon(escapeDisplayMath(html)));
+  // Cookie offline: embed fonts + vendored mermaid/ELK so the written file opens from
+  // file:// anywhere (output dir has no ../assets tree, and Chrome blocks file:// ES modules).
+  const inlined = inlineCookieAssets(ensureDocumentMetadata(ensureFavicon(escapeDisplayMath(html))));
+  return { html: inlined.html, warnings: inlined.warnings };
 }
 
 function runOpener(command, args, openTarget) {
@@ -270,7 +274,7 @@ function prepareVisualExplanation(params) {
   const recommendedFlow = [
     "Use the visual-explainer prompt or skill resources to choose the page shape.",
     "Gather and verify the source facts in the host model. The MCP server does not call an LLM.",
-    "For custom output, generate a complete self-contained HTML document and call visual_explainer_render_html.",
+    "For custom output, generate a complete HTML document and call visual_explainer_render_html. Reference Cookie fonts and the vendored mermaid bundle with ../assets/ paths as the templates do; the server inlines them so the written file is self-contained.",
     "For explicit quick mode, build a compact spec that follows visual-explainer://quick/schema.json and call visual_explainer_render_quick.",
     "Keep output filenames as basenames. The MCP server writes only inside its configured output directory (default ~/.agent/diagrams/).",
   ];
@@ -291,7 +295,7 @@ function prepareVisualExplanation(params) {
 async function writeRenderedHtml(filenameInput, htmlInput, open, viewer) {
   const filename = outputFilename(filenameInput);
   assertHtmlDocument(htmlInput);
-  const html = prepareRenderedHtml(htmlInput);
+  const { html, warnings } = prepareRenderedHtml(htmlInput);
   const { path: outputDir, configured } = resolveOutputDirectory();
   const outputPath = join(outputDir, filename);
 
@@ -322,6 +326,7 @@ async function writeRenderedHtml(filenameInput, htmlInput, open, viewer) {
   if (openResult.fallbackFrom === "glimpse") {
     message += ` Glimpse fallback reason: ${openResult.fallbackError ?? "unknown error"}.`;
   }
+  if (warnings.length) message += `\nCookie offline warnings:\n- ${warnings.join("\n- ")}`;
 
   return { message, output: compact({ path: outputPath, viewer, ...openResult }) };
 }

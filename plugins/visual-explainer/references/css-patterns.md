@@ -8,8 +8,8 @@ Always define both light and dark palettes via custom properties. Start with whi
 
 ```css
 :root {
-  --font-body: 'Outfit', system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+  --font-body: 'Fira Code Nerd Font Propo', system-ui, sans-serif;
+  --font-mono: 'Fira Code Nerd Font Mono', ui-monospace, monospace;
 
   --bg: #f8f9fa;
   --surface: #ffffff;

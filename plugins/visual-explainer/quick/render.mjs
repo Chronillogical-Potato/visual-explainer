@@ -2,6 +2,7 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { inlineCookieAssets } from "../offline/inline-assets.mjs";
 
 const quickDir = dirname(fileURLToPath(import.meta.url));
 const tones = new Set(["neutral", "accent", "positive", "warning", "danger", "info"]);
@@ -188,7 +189,8 @@ export async function renderQuickSpec(spec) {
   if (errors.length) throw new Error(`Quick spec validation failed:\n- ${errors.join("\n- ")}`);
   const css = await readFile(join(quickDir, "base.css"), "utf8");
   const sections = spec.sections.map((section, index) => `<section class="section" data-tone="${tone(section.tone)}"><div class="section-head"><div><h2>${escapeHtml(section.title)}</h2>${section.subtitle ? `<p class="section-subtitle">${escapeHtml(section.subtitle)}</p>` : ""}</div><span class="section-kicker">${String(index + 1).padStart(2, "0")}</span></div>${section.summary ? `<p class="section-summary">${escapeHtml(section.summary)}</p>` : ""}${renderCards(section.cards)}${renderTable(section.table)}${renderLists(section)}${renderFlow(section.flow)}${renderCalloutsAndEvidence(section)}</section>`).join("");
-  return `<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1.0">\n<title>${escapeHtml(spec.title)}</title>\n${standardFavicon}\n<style>\n${css}\n</style>\n</head>\n<body>\n<main>\n<header><h1>${escapeHtml(spec.title)}</h1>${spec.subtitle ? `<p class="subtitle">${escapeHtml(spec.subtitle)}</p>` : ""}${spec.summary ? `<p class="summary">${escapeHtml(spec.summary)}</p>` : ""}</header>\n<div class="sections">${sections}</div>\n</main>\n</body>\n</html>\n`;
+  // Cookie offline: embed fonts so the page works from file:// in any folder.
+  return inlineCookieAssets(`<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1.0">\n<title>${escapeHtml(spec.title)}</title>\n${standardFavicon}\n<style>\n${css}\n</style>\n</head>\n<body>\n<main>\n<header><div class="cookie-title-block"><h1>${escapeHtml(spec.title)}</h1></div>${spec.subtitle ? `<p class="subtitle">${escapeHtml(spec.subtitle)}</p>` : ""}${spec.summary ? `<p class="summary">${escapeHtml(spec.summary)}</p>` : ""}</header>\n<div class="sections">${sections}</div>\n</main>\n</body>\n</html>\n`).html;
 }
 
 async function main() {
