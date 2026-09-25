@@ -30,4 +30,4 @@ Cite command output or file:line evidence for project state, module/function/typ
 
 Use responsive nav. Use compact reference tables for file maps and commands. Follow the skill’s Mermaid, overflow, and delivery rules.
 
-Write to `~/.agent/diagrams/` and open in browser.
+Write to `~/.agent/diagrams/`, make it self-contained (render tool, or `offline/inline-assets.mjs` — see SKILL.md "Cookie offline delivery"), and open in browser.

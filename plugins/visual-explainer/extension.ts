@@ -4,6 +4,7 @@ import { homedir } from "node:os";
 import { join } from "node:path";
 import type { AgentToolResult, ExtensionAPI } from "@earendil-works/pi-coding-agent";
 import { renderQuickSpec } from "./quick/render.mjs";
+import { inlineCookieAssets } from "./offline/inline-assets.mjs";
 
 type VisualExplainerParams = {
   action: "prepare" | "render" | "render_quick";
@@ -180,8 +181,11 @@ function ensureDocumentMetadata(html: string) {
   return output;
 }
 
-function prepareRenderedHtml(html: string) {
-  return ensureDocumentMetadata(ensureFavicon(escapeDisplayMath(html)));
+function prepareRenderedHtml(html: string): { html: string; warnings: string[] } {
+  // Cookie offline: embed fonts + vendored mermaid/ELK so the written file opens from
+  // file:// anywhere (~/.agent/diagrams has no ../assets tree; Chrome blocks file:// ES modules).
+  const inlined = inlineCookieAssets(ensureDocumentMetadata(ensureFavicon(escapeDisplayMath(html))));
+  return { html: inlined.html, warnings: inlined.warnings };
 }
 
 function runOpener(command: string, args: string[], openTarget: OpenTarget): Promise<OpenResult> {
@@ -327,7 +331,7 @@ async function writeRenderedHtml(
 
   const filename = outputFilename(filenameInput);
   assertHtmlDocument(htmlInput);
-  const html = prepareRenderedHtml(htmlInput);
+  const { html, warnings } = prepareRenderedHtml(htmlInput);
   const outputDir = join(homedir(), ".agent", "diagrams");
   const outputPath = join(outputDir, filename);
   if (existsSync(outputDir) && lstatSync(outputDir).isSymbolicLink()) throw new Error(`${outputDir} must not be a symlink`);
@@ -356,6 +360,7 @@ async function writeRenderedHtml(
   if (openResult.fallbackFrom === "glimpse") {
     message += ` Glimpse fallback reason: ${openResult.fallbackError ?? "unknown error"}.`;
   }
+  if (warnings.length) message += `\nCookie offline warnings:\n- ${warnings.join("\n- ")}`;
 
   return {
     content: [{ type: "text" as const, text: message }],

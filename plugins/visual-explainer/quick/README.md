@@ -1,6 +1,6 @@
 # Quick renderer
 
-Quick mode moves repeated HTML and CSS out of the agent response. The agent emits a compact JSON spec. `render.mjs` validates it and creates one complete, self-contained HTML document.
+Quick mode moves repeated HTML and CSS out of the agent response. The agent emits a compact JSON spec. `render.mjs` validates it and creates one complete, self-contained HTML document. (Cookie fork: fonts are embedded as data URLs, so the file works from any folder.)
 
 Quick mode is opt-in. Use it only for `/generate-web-diagram --quick`, `/diff-review --quick`, `/plan-review --quick`, or `/project-recap --quick`. Use full mode if the requested design does not fit the schema or if validation or rendering fails.
 

@@ -57,6 +57,7 @@
   .cookie-title h1, header.cookie-title-block h1, .slide-title-block h1,
   .cookie-title .title, header.cookie-title-block .title {
     font-family: inherit;
+    font-weight: 400; /* Geist Pixel Line ships one weight; avoid faux bold */
   }
 
 </style>
@@ -736,7 +737,7 @@
     <div class="reveal">
       <p class="slide__subtitle" style="margin-bottom:clamp(16px,2vh,32px);">Engineering Review &mdash; Q1 2026</p>
     </div>
-    <h1 class="slide__display reveal">API Gateway Redesign</h1>
+    <div class="slide-title-block reveal"><h1 class="slide__display">API Gateway Redesign</h1></div>
     <div class="reveal">
       <p class="slide__subtitle" style="margin-top:clamp(16px,2vh,32px);">From monolith proxy to edge-native routing</p>
     </div>
@@ -928,8 +929,10 @@ graph LR
 
 </div><!-- /deck -->
 
+<!-- Cookie offline: classic bundle (file:// safe). Inliner embeds it for saved decks. -->
+<script src="../assets/vendor/cookie/mermaid-elk.iife.min.js"></script>
 <script type="module">
-  import mermaid from '../assets/vendor/mermaid/dist/mermaid.esm.min.mjs';
+  const mermaid = globalThis.mermaid;
 
   const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
   mermaid.initialize({

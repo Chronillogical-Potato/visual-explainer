@@ -17,6 +17,7 @@ Generate self-contained HTML pages that explain systems, code changes, plans, da
 - Prefer an HTML page over terminal ASCII when the output is inherently visual.
 - If a table would have 4+ rows or 3+ columns, render it as HTML and give only a short chat summary.
 - Write files to `~/.agent/diagrams/` or the explicit eval output path. Use descriptive filenames.
+- **Cookie offline delivery (required):** every delivered page must open by double-click from `file://` in Chrome, on any machine, with zero outside requests. Reference Cookie fonts and Mermaid the way the templates do (`../assets/fonts/…` in `@font-face`, and a classic `<script src="../assets/vendor/cookie/mermaid-elk.iife.min.js"></script>` followed by `const mermaid = globalThis.mermaid;`). Never use `import … from '…mermaid…mjs'` (Chrome blocks ES-module loads on `file://`) and never use a CDN. The render tools (`visual_explainer.render`, `visual_explainer_render_html`, quick mode) embed those assets automatically. If you write the file yourself, finish with `node <this skill dir>/offline/inline-assets.mjs <file.html>`; it embeds fonts (WOFF2) and the Mermaid+ELK bundle, rewrites stray mermaid imports, and prints warnings for anything still external.
 - Generate a Markdown companion only when the user explicitly asks for AI-readable output or a source brief. Keep HTML as the final visual output; Markdown is a companion, never the source for HTML. Write `<name>.md` beside `<name>.html` when possible, and ask before replacing an existing companion file.
 - Open generated pages in the browser when running normally. In Pi package installs, use `visual_explainer` with `prepare` for planning/context and `render` only after the complete HTML document exists. MCP hosts use `visual-explainer-mcp`, which defaults render tools to `open: false`. Use `viewer: "glimpse"` only when the user wants a native Glimpse window and `glimpseui` is installed; `viewer: "auto"` may fall back to the browser.
 - The final page must be a complete self-contained HTML document, including embedded CSS, a self-contained favicon, and any needed JS. In Pi, `visual_explainer.render` also adds missing `html lang`, missing viewport metadata, and display-math escaping for raw `<` / `>` inside `$$...$$`.
@@ -35,7 +36,7 @@ Before writing any HTML:
 
 - Calibrate treatment: diff reviews, memos, audits, and recaps get polished-utilitarian (real hierarchy, considered spacing, no flashy hero); showcases and narrative decks get editorial. A well-composed page is never wrong; an over-designed one sometimes is.
 - Precedence: the user's words, then the project's existing design system (theme/token files, component styles), then this skill's choices. Check repo tokens before picking a palette for diff/plan reviews.
-- Plan first: 4–6 named hex values, type roles, a one-sentence layout concept. Audit once — "would I produce this plan for any similar page?" — and revise the generic parts. (Generic: slate `#0f172a`, indigo, Inter, hero plus three cards. Revised for a CLI recap: near-black green, phosphor text, amber accent, JetBrains Mono — terminal direction, layout follows the release timeline.)
+- Plan first: 4–6 named hex values, type roles, a one-sentence layout concept. Audit once — "would I produce this plan for any similar page?" — and revise the generic parts. (Generic: slate `#0f172a`, indigo, Inter, hero plus three cards. Revised for a CLI recap: near-black green, phosphor text, amber accent, Fira Code Nerd Font Mono for grid/code — terminal direction, layout follows the release timeline.)
 - Structure must encode something true: 01/02/03 markers only when order matters, eyebrow labels only when they classify, dividers only at real seams.
 
 ## Reference routing
@@ -92,7 +93,7 @@ How to render:
 - Use semantic HTML where it helps accessibility and copy/paste: `<table>`, headings, lists, `<details>`, captions.
 - Use CSS custom properties for palette: `--bg`, `--surface`, `--border`, `--text`, `--text-dim`, and 3–5 accents.
 - Pages meant to persist ship both color schemes: tokens on `:root`, the `prefers-color-scheme` media query redefines tokens only, components styled through tokens. Pick the second theme's values; never invert. Single-theme is fine when deliberate (one-shot pages, quick mode, `themes.md` picker).
-- Commit to one palette (with its light and dark scheme variants) and one font pair. Add a runtime picker only when the user asks to switch themes or fonts, or names a prebuilt palette; see `./references/themes.md`.
+- Commit to one palette (with its light and dark scheme variants). Fonts are fixed by Cookie policy (below). Add a runtime picker only when the user asks to switch themes or fonts, or names a prebuilt palette; see `./references/themes.md`.
 - Anchor the aesthetic direction to the content's domain: CLI/infra → terminal or IDE-inspired; metrics/audits → data-dense; plans/architecture → blueprint; recaps → editorial; prose → paper/ink. Warm cream + serif + terracotta on everything is itself a cliché.
 - Avoid generic defaults when choosing freely (a project's existing design system overrides this list): no body font that is only Inter, Roboto, Arial, Helvetica, or system-ui; no violet/fuchsia Tailwind-default accents as the main palette (`#8b5cf6`, `#7c3aed`, `#a78bfa`, `#d946ef`); no cyan+magenta+purple neon dashboard; no gradient-mesh blobs; no purple-to-blue gradient heroes, emoji section markers, centered-everything layouts, uniform large border-radius, or default accent bars on rounded cards.
 - Set type deliberately: running text near 65ch, a committed type scale, `text-wrap: balance` on headings, letter-spacing on uppercase labels.
@@ -100,8 +101,8 @@ How to render:
 - Bias neutrals toward the accent hue; pure mid-grey reads as unconsidered. Space siblings with flex/grid `gap`, not collapsing margins; `tabular-nums` where digits align in columns; watch specificity so classes do not silently cancel each other's spacing.
 - Microcopy is design material: name things by what readers recognize, not internal structure; controls say exactly what happens; specific beats clever.
 - Dashboards are scanned, not read: summary before detail; encode state in form (pills, chips, severity stripes); keep semantic color separate from the accent hue; interactive things look interactive.
-- Good font pair families: DM Sans + Fira Code; Instrument Serif + JetBrains Mono; IBM Plex Sans + IBM Plex Mono; Bricolage Grotesque + JetBrains Mono; Plus Jakarta Sans + Azeret Mono.
-- Load every font weight the CSS uses, including mono labels. Do not rely on faux-bold for 500, 600, or 700 weights.
+- Cookie fonts only (see `COOKIE.md`): body/GUI = `Fira Code Nerd Font Propo`; grid/code/labels = `Fira Code Nerd Font Mono`; titles/headers = `Geist Pixel Line`, only inside its own container (`<header class="cookie-title-block"><h1>…</h1></header>`, or `.slide-title-block` in decks), never inline-mixed with other families. Each ships weight 400 only.
+- Load every font weight the CSS uses, including mono labels. Do not rely on faux-bold for 500, 600, or 700 weights (Cookie fonts ship 400 only; use size, color and case for emphasis).
 - Good accent directions: terracotta+sage, teal+slate, rose+cranberry, amber+emerald, deep blue+gold.
 - Prevent overflow: `min-width: 0` on grid/flex children, `overflow-wrap: break-word` for long text, and scroll containers for wide tables/code.
 - Do not set `display: flex` directly on `<li>` when list markers matter.
@@ -135,6 +136,7 @@ Before delivery, verify:
 - no horizontal overflow at normal desktop width;
 - fonts load with fallbacks;
 - page has a self-contained favicon;
+- the file is self-contained (render tool or `offline/inline-assets.mjs` ran with no warnings) and the diagram paints when opened from `file://`;
 - tables preserve rows/columns and wrap long text;
 - interactive elements have visible keyboard focus states;
 - diagrams sit in `<figure>` with a claim-stating `figcaption`, plus `role="img"` and a matching `aria-label` on the shell wrapper, not the Mermaid SVG (re-renders replace it);

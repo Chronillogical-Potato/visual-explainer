@@ -1145,8 +1145,8 @@ Deep navy, serif display, warm gold accents. Cinematic, premium. Dark-first.
 
 ```css
 :root {
-  --font-body: 'Instrument Serif', Georgia, serif;
-  --font-mono: 'JetBrains Mono', 'SF Mono', monospace;
+  --font-body: 'Fira Code Nerd Font Propo', system-ui, sans-serif;
+  --font-mono: 'Fira Code Nerd Font Mono', ui-monospace, monospace;
   --bg: #0f1729;
   --surface: #162040;
   --surface2: #1d2b52;
@@ -1186,8 +1186,8 @@ Cream paper, bold sans, terracotta/coral accents. Confident and modern. Light-fi
 
 ```css
 :root {
-  --font-body: 'Plus Jakarta Sans', system-ui, sans-serif;
-  --font-mono: 'Azeret Mono', 'SF Mono', monospace;
+  --font-body: 'Fira Code Nerd Font Propo', system-ui, sans-serif;
+  --font-mono: 'Fira Code Nerd Font Mono', ui-monospace, monospace;
   --bg: #faf6f0;
   --surface: #ffffff;
   --surface2: #f5ece0;
@@ -1227,8 +1227,8 @@ Dark, monospace everything, green/cyan accents, faint grid. Developer-native. Da
 
 ```css
 :root {
-  --font-body: 'Geist Mono', 'SF Mono', Consolas, monospace;
-  --font-mono: 'Geist Mono', 'SF Mono', Consolas, monospace;
+  --font-body: 'Fira Code Nerd Font Propo', system-ui, sans-serif;
+  --font-mono: 'Fira Code Nerd Font Mono', ui-monospace, monospace;
   --bg: #0a0e14;
   --surface: #12161e;
   --surface2: #1a1f2a;
@@ -1268,8 +1268,8 @@ White, geometric sans, single bold accent, visible grid. Minimal and precise. Li
 
 ```css
 :root {
-  --font-body: 'DM Sans', system-ui, sans-serif;
-  --font-mono: 'Fira Code', 'SF Mono', monospace;
+  --font-body: 'Fira Code Nerd Font Propo', system-ui, sans-serif;
+  --font-mono: 'Fira Code Nerd Font Mono', ui-monospace, monospace;
   --bg: #ffffff;
   --surface: #f8f8f8;
   --surface2: #f0f0f0;

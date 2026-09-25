@@ -1,6 +1,8 @@
-# External Libraries (CDN)
+# External Libraries (vendored, offline)
 
-Optional CDN libraries for cases where pure CSS/HTML isn't enough. Only include what the diagram actually needs — most diagrams need zero external JS.
+Cookie policy: no CDN at view-time. Mermaid + ELK are vendored as one classic (non-module) script, `../assets/vendor/cookie/mermaid-elk.iife.min.js`, which works from `file://` in Chrome (ES-module imports do not). Deliver through the render tool or `offline/inline-assets.mjs` so the bundle and fonts are embedded in the saved file.
+
+Optional libraries for cases where pure CSS/HTML isn't enough. Only include what the diagram actually needs — most diagrams need zero external JS.
 
 ## Mermaid.js — Diagramming Engine
 
@@ -8,35 +10,38 @@ Use for flowcharts, sequence diagrams, ER diagrams, state machines, mind maps, c
 
 Do NOT use for dashboards — CSS Grid card layouts with Chart.js look better for those. Data tables use `<table>` elements.
 
-**CDN:**
+**Load (vendored classic bundle, file:// safe):**
 ```html
+<script src="../assets/vendor/cookie/mermaid-elk.iife.min.js"></script>
 <script type="module">
-  import mermaid from '../assets/vendor/mermaid/dist/mermaid.esm.min.mjs';
+  const mermaid = globalThis.mermaid;
 
   mermaid.initialize({ startOnLoad: true, /* ... */ });
 </script>
 ```
 
-**With ELK layout** (required for `layout: 'elk'` — it's a separate package, not bundled in core):
+**With ELK layout** (`layout: 'elk'`; the Cookie bundle already includes `@mermaid-js/layout-elk` and registers it — registering again is harmless):
 ```html
+<script src="../assets/vendor/cookie/mermaid-elk.iife.min.js"></script>
 <script type="module">
-  import mermaid from '../assets/vendor/mermaid/dist/mermaid.esm.min.mjs';
-  import elkLayouts from '../assets/vendor/mermaid-layout-elk/dist/mermaid-layout-elk.esm.min.mjs';
+  const mermaid = globalThis.mermaid;
+  const elkLayouts = globalThis.mermaidLayoutElk;
 
   mermaid.registerLayoutLoaders(elkLayouts);
   mermaid.initialize({ startOnLoad: true, layout: 'elk', /* ... */ });
 </script>
 ```
 
-Without the ELK import and registration, `layout: 'elk'` silently falls back to dagre. Only import ELK when you actually need it — it adds significant bundle weight. Most simple diagrams render fine with dagre.
+Never `import` the `.mjs` files under `assets/vendor/mermaid*/` from a page: they are only the build input for the classic bundle (`npm run build:vendor`), and Chrome blocks them on `file://`.
 
 ### Deep Theming
 
 Always use `theme: 'base'` — it's the only theme where all `themeVariables` are fully customizable. The built-in themes (`default`, `dark`, `forest`, `neutral`) ignore most variable overrides.
 
 ```html
+<script src="../assets/vendor/cookie/mermaid-elk.iife.min.js"></script>
 <script type="module">
-  import mermaid from '../assets/vendor/mermaid/dist/mermaid.esm.min.mjs';
+  const mermaid = globalThis.mermaid;
 
   const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
   mermaid.initialize({
@@ -573,40 +578,18 @@ Always load with `display=swap` for fast rendering. Pick a distinctive pairing �
 Define as CSS variables for easy reference:
 ```css
 :root {
-  --font-body: 'IBM Plex Sans', system-ui, sans-serif;
-  --font-mono: 'IBM Plex Mono', 'SF Mono', Consolas, monospace;
+  --font-body: 'Fira Code Nerd Font Propo', system-ui, sans-serif;
+  --font-mono: 'Fira Code Nerd Font Mono', ui-monospace, monospace;
 }
 ```
 
-**Font pairings** (rotate — never use the same pairing twice in a row):
+**Cookie fonts only** (files in `../assets/fonts/`, embedded by the inliner):
 
-| Body / Headings | Mono / Labels | Feel | Use for |
-|---|---|---|---|
-| DM Sans | Fira Code | Friendly, developer | Blueprint, technical docs |
-| Instrument Serif | JetBrains Mono | Editorial, refined | Plan reviews, decision logs |
-| IBM Plex Sans | IBM Plex Mono | Reliable, readable | Architecture diagrams |
-| Bricolage Grotesque | Fragment Mono | Bold, characterful | Data tables, dashboards |
-| Plus Jakarta Sans | Azeret Mono | Rounded, approachable | Status reports, audits |
-| Outfit | Space Mono | Clean geometric, modern | Flowcharts, pipelines |
-| Sora | IBM Plex Mono | Technical, precise | ER diagrams, schemas |
-| Crimson Pro | Noto Sans Mono | Scholarly, serious | RFC reviews, specs |
-| Fraunces | Source Code Pro | Warm, distinctive | Project recaps |
-| Geist | Geist Mono | Sharp, modern | Modern API docs |
-| Red Hat Display | Red Hat Mono | Cohesive family | System overviews |
-| Libre Franklin | Inconsolata | Classic, reliable | Data-dense tables |
-| Playfair Display | Roboto Mono | Elegant contrast | Executive summaries |
+| Role | Family | Notes |
+|---|---|---|
+| Body / GUI / reading | `Fira Code Nerd Font Propo` | `--font-body` |
+| Grid / code / labels / tables | `Fira Code Nerd Font Mono` | `--font-mono` |
+| Titles / headers | `Geist Pixel Line` | `--font-title`; only inside its own container (`header.cookie-title-block`, `.slide-title-block`), never inline-mixed |
 
-The first 5 pairings are recommended for most use cases. Vary across consecutive diagrams. Load every weight the CSS renders. Fragment Mono ships only `400`, and Space Mono ships `400` and `700`; use those only when your mono CSS uses those weights.
+All three ship weight 400 only; express hierarchy with size, color, case and spacing instead of bold.
 
-### Typography by Content Voice
-
-For prose-heavy pages (documentation, articles, essays), match typography to the content's voice:
-
-| Voice | Fonts | Best For |
-|-------|-------|----------|
-| **Literary / Thoughtful** | Literata, Lora, Newsreader, Merriweather | Essays, personal posts, long-form articles |
-| **Technical / Precise** | IBM Plex Sans + Mono, Geist + Geist Mono, Source family | Documentation, READMEs, API references |
-| **Bold / Contemporary** | Bricolage Grotesque, Space Grotesk, DM Sans | Product pages, feature announcements |
-| **Minimal / Focused** | Source Serif 4 + Source Sans 3, Karla + Inconsolata | Tutorials, how-tos, focused reading |
-
-**Literata** deserves special mention — it has optical sizing designed specifically for screen reading. Google's answer to Georgia, but modernized.

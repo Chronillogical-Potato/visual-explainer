@@ -11,3 +11,5 @@ When the user asks for a diagram, architecture overview, diff review, plan revie
 Write generated HTML to `~/.agent/diagrams/` unless the user asks for another path, then open it in a browser if Cursor permits shell/browser access. If browser access is blocked, report the file path.
 
 Command palettes may not expose these templates directly in Cursor.
+
+**Cookie offline:** pages must be self-contained and open from `file://`. Render tools inline assets automatically; if you write the HTML file yourself, finish with `node plugins/visual-explainer/offline/inline-assets.mjs <file.html>` (see `COOKIE.md`).
